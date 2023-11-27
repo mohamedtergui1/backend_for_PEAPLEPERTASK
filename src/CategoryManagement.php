@@ -3,10 +3,13 @@ require("cnx.php");
 $qeury = "SELECT  categories.name as name, COUNT(souscategories.categoriesID)  as number_of_sub_catgoty , categories.id as  id
 FROM categories
 LEFT JOIN souscategories ON categories.id = souscategories.categoriesID
-GROUP BY categories.id;
+GROUP BY categories.id
+ORDER BY categories.id desc
+;
 ";
 $qeury_CATEGORY = "SELECT souscategories.id as id_sub ,name,souscategoriesNAME FROM categories INNER JOIN souscategories
-ON categories.id = souscategories.categoriesID
+ON categories.id = souscategories.categoriesID 
+ORDER BY souscategories.id desc
  ";
 $categories = mysqli_query($cnx, $qeury);
 $categoriesA = mysqli_query($cnx, $qeury);

@@ -1,7 +1,10 @@
-const btns_dele=document.querySelectorAll(".dele_btn")
-  const users =document.querySelectorAll(".user")
-  for(let i=0;i<btns_dele.length;i++){
-   btns_dele[i].addEventListener('click',()=>{
-      users[i].style.display="none"
-   })
-  }
+
+const modal_add_user = document.querySelector("#add_user");
+const  btn_close_modal =document.querySelector("#btn_add_user");
+btn_close_modal.addEventListener('click',()=>{
+    modal_add_user.showModal();
+})
+const close_btn = document.querySelector("#close_btn");
+close_btn.addEventListener('click',()=>{
+   modal_add_user.close();
+})

@@ -88,6 +88,16 @@
                 </a>
             </li>
             <li>
+                <a href="Freelancers_Management.php"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+
+                    <span class="flex-1 ml-3 whitespace-nowrap">Freelancers Management</span>
+                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500  transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 19">
+    <path d="M7.324 9.917A2.479 2.479 0 0 1 7.99 7.7l.71-.71a2.484 2.484 0 0 1 2.222-.688 4.538 4.538 0 1 0-3.6 3.615h.002ZM7.99 18.3a2.5 2.5 0 0 1-.6-2.564A2.5 2.5 0 0 1 6 13.5v-1c.005-.544.19-1.072.526-1.5H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h7.687l-.697-.7ZM19.5 12h-1.12a4.441 4.441 0 0 0-.579-1.387l.8-.795a.5.5 0 0 0 0-.707l-.707-.707a.5.5 0 0 0-.707 0l-.795.8A4.443 4.443 0 0 0 15 8.62V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.12c-.492.113-.96.309-1.387.579l-.795-.795a.5.5 0 0 0-.707 0l-.707.707a.5.5 0 0 0 0 .707l.8.8c-.272.424-.47.891-.584 1.382H8.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1.12c.113.492.309.96.579 1.387l-.795.795a.5.5 0 0 0 0 .707l.707.707a.5.5 0 0 0 .707 0l.8-.8c.424.272.892.47 1.382.584v1.12a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1.12c.492-.113.96-.309 1.387-.579l.795.8a.5.5 0 0 0 .707 0l.707-.707a.5.5 0 0 0 0-.707l-.8-.795c.273-.427.47-.898.584-1.392h1.12a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5ZM14 15.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/>
+  </svg>
+                </a>
+            </li>
+            <li>
                 <a href="UsersManagement.php"
                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
@@ -113,11 +123,19 @@
 
                 </a>
             </li>
+            <li>
+                <a href="projects_management.php"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
+                    <span class="flex-1 ml-3 whitespace-nowrap">Projects Management</span>
+                
+                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" width="512" height="512" viewBox="0 0 512 512" style="color:currentColor" xmlns="http://www.w3.org/2000/svg" class="h-full w-full"><rect width="512" height="512" x="0" y="0" rx="94" fill="transparent" stroke="transparent" stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect><svg width="512px" height="512px" viewBox="0 0 24 24" fill="currentColor" x="0" y="0" role="img" style="display:inline-block;vertical-align:middle" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M17.75 9.893a3.143 3.143 0 1 0 0-6.286a3.143 3.143 0 0 0 0 6.286Zm-.524-8.643h1.048m-.524 0v2.357m3.519-1.116l.74.74m-.37-.37l-1.667 1.667m3.278 1.698v1.048m0-.524h-2.357m1.116 3.519l-.74.74m.37-.37l-1.667-1.667m-1.698 3.278h-1.048m.524 0V9.893m-3.519 1.116l-.74-.74m.37.37l1.667-1.667M12.25 7.274V6.226m0 .524h2.357m-1.116-3.519l.74-.74m-.37.37l1.667 1.667M7.5 15l1.673-1.255a1.568 1.568 0 0 1 2.247.385v0a1.569 1.569 0 0 1 0 1.74l-1.645 2.467A4.5 4.5 0 0 1 7.7 20.019L5.25 21m3-11.25l-3.595 1.541a4.5 4.5 0 0 0-2.364 2.363L1.114 16.4a4.5 4.5 0 0 0-.364 1.774v5.076"/><path d="M23.25 14.25V21A2.25 2.25 0 0 1 21 23.25H10.5A2.25 2.25 0 0 1 8.25 21v-1.245m0-5.318V3A2.25 2.25 0 0 1 10.5.75h1.75"/></g></g></svg></svg>
+                </a>
+            </li>
             <li class="bg-white  rounded-lg  ">
 
                 <a href="sign_in.php"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:bg-custom-green hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:bg-custom-green hover:bg-gray-100 dark:hover:bg-gray-500 group">
                     <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 18 16">
