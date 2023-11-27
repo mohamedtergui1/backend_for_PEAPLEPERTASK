@@ -61,7 +61,7 @@ else if (isset($_GET['edit_sub_category_new_name'])&& isset($_GET['edit_sub_cate
     $run_qeuryUpdate = mysqli_query($cnx,$qeury_update);
     header('Location:CategoryManagement.php');
 }
-     
+mysqli_close($cnx);
 ?>
 
 <!doctype html>
@@ -95,7 +95,7 @@ else if (isset($_GET['edit_sub_category_new_name'])&& isset($_GET['edit_sub_cate
                     <div
                         class=" shadow-sm rounded-lg gap-2 bg-slate-500 p-5  flex flex-col md:flex-row justify-around items-center ">
                         <div class=" shadow-sm rounded-lg gap-2 bg-slate-500 p-5  flex flex-col items-center">
-                            <h2 class="text-xl font-semibold text-white">add category</h2>
+                            <h2 class="text-xl font-semibold text-white">Add Category</h2>
                             <div class="flex   gap-4">
                                 <form method="GET" action="CategoryManagement.php">
                                     <input id="value_add_cetegory" name="nom_cetegoty_add"
@@ -143,7 +143,7 @@ else if (isset($_GET['edit_sub_category_new_name'])&& isset($_GET['edit_sub_cate
                 <h1 class="text-3xl text-center font-bold mt-5">Sub Category Management</h1>
                 <div class="flex p-4 gap-6 justify-center flex-col">
                     <div class=" shadow-sm rounded-lg gap-2 bg-slate-500 p-5  flex flex-col items-center">
-                        <h2 class="text-xl font-semibold text-white">add sous category</h2>
+                        <h2 class="text-xl font-semibold text-white">Add Sub Category</h2>
                         <div class="flex   gap-4">
                             <form method="GET" action="CategoryManagement.php">
                                 <input id="value_add_cetegory" name="nom_cetegoty_"

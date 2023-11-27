@@ -37,7 +37,7 @@ else if (isset($_GET['delete_all'])){
 
 
 
-
+mysqli_close($cnx);
 ?>
 
 <!doctype html>
@@ -244,8 +244,6 @@ else if (isset($_GET['delete_all'])){
 
     <script src="../javascript/jquery.js"></script>
     <script src="../javascript/dashboard.js"></script>
-
-
     <script src="../javascript/dashUser.js"></script>
 </body>
 

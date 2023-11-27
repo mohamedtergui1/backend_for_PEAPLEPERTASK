@@ -5,10 +5,10 @@ $res=mysqli_query($cnx,$qeury);
 $query_users="SELECT users.id AS id, username FROM users LEFT JOIN freelances ON users.id = freelances.usersID WHERE freelances.usersID IS NULL 
 UNION 
 SELECT freelances.usersID AS id, NULL AS username FROM freelances LEFT JOIN users ON freelances.usersID = users.id WHERE users.id IS NULL;";
- 
-
 
 $result=mysqli_query($cnx,$query_users);
+
+
 if(isset($_GET['id_delete_freelanxer'])){
     $id=$_GET['id_delete_freelanxer'];
     $qeury="DELETE FROM freelances WHERE id = $id";
@@ -38,6 +38,9 @@ else if (isset($_GET['delete_all'])){
     header("Location:Freelancers_Management.php");
     }
 }
+
+
+mysqli_close($cnx);
 ?>
 
 <!doctype html>
@@ -99,7 +102,7 @@ else if (isset($_GET['delete_all'])){
                                                 <th scope="col "
                                                     class="py-3 px-6 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
                                                     <form
-                                                        onsubmit="return confirm('Are you sure you want to delete all user?');"
+                                                        onsubmit="return confirm('Are you sure you want to delete all freelancers?');"
                                                         method="get">
                                                         <input type="hidden" name="delete_all" value="true">
                                                         <input class="sr-only cursor-pointer text-red-500" type="submit"
@@ -135,7 +138,7 @@ else if (isset($_GET['delete_all'])){
                                                     </td>
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap ">
                                                         <form
-                                                            onsubmit="return confirm('Are you sure you want to delete this user?');"
+                                                            onsubmit="return confirm('Are you sure you want to delete this freelancer?');"
                                                            method="get"
                                                             class="text-red-500 dark:text-red-500 hover:underline ">
                                                             <input type="hidden" name="id_delete_freelanxer" value="<?= $id ?>">
