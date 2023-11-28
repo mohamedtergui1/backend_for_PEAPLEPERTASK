@@ -11,7 +11,17 @@ $qeury_city ="SELECT id, nom FROM city";
 $city_res=mysqli_query($cnx,$qeury_city);
 
 // add user
-if(isset($_GET["username"])&&isset($_GET["password"])&&isset($_GET["email"])&&isset($_GET["region"])&&isset($_GET["city"])){
+if(isset($_POST['id'])&&isset($_POST['email'])&&isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['region'])&&isset($_POST['city'])){
+    $id_edit=$_POST['id'];
+    $emailedit=$_POST['email'];
+    $username_edit=$_POST['username'];
+    $password_edit=$_POST['password'];
+    $city_edit=$_POST['city'];
+    $region_edit=$_POST['region'];
+    $run_edit_qeury=mysqli_query($cnx,"UPDATE users SET username='$username_edit',password='$password_edit',email='$emailedit',city_id=$city_edit,id_region= $region_edit WHERE id= $id_edit");
+    header('Location:UsersManagement.php');
+}
+else if(isset($_GET["username"])&&isset($_GET["password"])&&isset($_GET["email"])&&isset($_GET["region"])&&isset($_GET["city"])){
      $username_get=$_GET["username"];
      $password_get=$_GET["password"];
      $email_get=$_GET["email"];
@@ -34,6 +44,7 @@ else if (isset($_GET['delete_all'])){
     header('Location:UsersManagement.php');
     }
 }
+
 
 
 
@@ -155,11 +166,11 @@ mysqli_close($cnx);
                                                     </td>
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
 
-
-                                                        <input type="hidden" class="id_user" value="<?= $id ?>">
-                                                        <b
-                                                            class="text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Edit</b>
-
+                                                          <form action="edit.php" method="post">
+                                                        <input type="hidden" name="id_user" class="id_user" value="<?=$id?>">
+                                                        <input
+                                                            class="text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" type="submit" value="Edit">
+                                                                    </form>
                                                     </td>
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap ">
                                                         <form

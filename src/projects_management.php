@@ -9,7 +9,18 @@ $qeury_category = "SELECT id,name FROM categories";
 $result_category = mysqli_query($cnx, $qeury_category);
 $qeury_subcategory = "SELECT id,souscategoriesNAME FROM souscategories";
 $result_sub_category = mysqli_query($cnx, $qeury_subcategory);
-if (isset($_GET['name_project']) && $_GET['description'] && $_GET['user'] && $_GET['category'] && $_GET['sub_category']) {
+if (isset($_POST['user']) && $_POST['category'] && $_POST['sub_category'] && $_POST['description'] && $_POST['name'] && $_POST['id']){
+    $name_project = $_POST['name'];
+    $description = $_POST['description'];
+    $user = $_POST['user'];
+    $category = $_POST['category'];
+    $sub_category = $_POST['sub_category'];
+      $id_edit=$_POST['id'];
+    $res=mysqli_query($cnx,"UPDATE projects SET projectNAME=' $name_project',
+    projrctDescription='$description',categoriesID=$category,souscategoriesID=$sub_category,usersID=$user WHERE id= $id_edit");
+     header("Location:projects_management.php");
+}
+else  if (isset($_GET['name_project']) && $_GET['description'] && $_GET['user'] && $_GET['category'] && $_GET['sub_category']) {
     $name_project = $_GET['name_project'];
     $description = $_GET['description'];
     $user = $_GET['user'];
@@ -148,11 +159,10 @@ else if(isset($_GET['delete_all'])){
                                                     </td>
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
 
-
-                                                        <input type="hidden" class="id_freelancer" value="<?=$id?>">
-                                                        <b
-                                                            class="text-blue-600 dark:text-blue-500 hover:underline cursor-pointer edit_freelancer_btn">Edit</b>
-
+                                                       <form action="edit_project.php" method="post">
+                                                        <input type="hidden" name="id" class="id_freelancer" value="<?=$id?>">
+                                                         <input  class="text-blue-600 dark:text-blue-500 hover:underline cursor-pointer edit_freelancer_btn" type="submit" value="Edit">
+                                                        </form>
                                                     </td>
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap ">
                                                         <form

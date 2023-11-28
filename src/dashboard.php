@@ -19,6 +19,12 @@ $statstique_project_by_city = mysqli_query($cnx, $qeury);
 $qeury = "SELECT city.nom as city , COUNT(users.id) as number_users FROM users INNER JOIN city ON  users.city_id = city.id
     GROUP BY city.id";
 $statstique_users_by_city = mysqli_query($cnx, $qeury);
+$qeury = "SELECT city.nom AS city , COUNT(users.id) as number_of_freelnacer FROM freelances INNER JOIN city INNER JOIN users
+ON   users.city_id = city.id and users.id=freelances.usersID
+GROUP BY city.id ";
+$statstique_freelancer_by_city = mysqli_query($cnx, $qeury);
+$qeury="SELECT (COUNT(freelances.id)/(SELECT COUNT(id)  from users)) as pourcentage from freelances";
+$pourcentage =mysqli_fetch_assoc(mysqli_query($cnx,$qeury))["pourcentage"];
 
 ?>
 <!doctype html>
@@ -56,9 +62,11 @@ $statstique_users_by_city = mysqli_query($cnx, $qeury);
             <p class="font-bold text-4xl">
               <?= $number_of_users ?>
             </p>
-            <span class="text-custom-green">
-              +7%
-            </span>
+            <span>users/freelancers</span>
+           
+             
+           <span class="text-custom-green"> <?= 1/$pourcentage."%"?></span>
+       
           </div>
           <div
             class="shadow-lg text-center w-2/3 sm:w-2/5 bg-gray-50 flex flex-col gap-2 py-3 rounded-lg dark:bg-gray-600 dark:text-white">
@@ -66,9 +74,12 @@ $statstique_users_by_city = mysqli_query($cnx, $qeury);
             <p class="font-bold text-4xl">
               <?= $number_of_freelancer ?>
             </p>
-            <span class="text-custom-green">
-              +0.007%
-            </span>
+            <span>freelancers/users</span>
+           
+             
+              <span class="text-custom-green"> <?= $pourcentage."%"?></span>
+          
+           
           </div>
           <div
             class="shadow-lg text-center w-2/3 sm:w-2/5 bg-gray-50 flex flex-col gap-2 py-3 rounded-lg dark:bg-gray-600 dark:text-white">
@@ -161,11 +172,19 @@ $statstique_users_by_city = mysqli_query($cnx, $qeury);
             <li class="font-bold">CITY</li>
             <li class="font-bold">TOTAL freelancers</li>
           </ul>
-          <ul class="flex justify-around text-center bg-gray-50 py-3 dark:bg-slate-400">
-            <li class="w-1/2"></li>
-            <li class="w-1/2"></li>
-          </ul>
+          <?php 
+          while($row3=mysqli_fetch_assoc($statstique_freelancer_by_city)):
+            $city3=$row3['city'];
+            $number_of_freelnacer=$row3['number_of_freelnacer'];
 
+        
+          ?>
+          <ul class="flex justify-around text-center bg-gray-50 py-3 dark:bg-slate-400">
+            <li class="w-1/2"><?=$city3?></li>
+            <li class="w-1/2"><?=$number_of_freelnacer?></li>
+          </ul>
+    <?php
+    endwhile; ?>
 
         </div>
       </section>
