@@ -1,4 +1,11 @@
+<?php  
+  $photo;
+  $name_user;
+  $status;
+  $status_link;
+  $username_link;
 
+?>
 <header class="flex bg-gray-50 justify-between p-2 md:py-3 md:px-8 lg:px-10 dark:bg-slate-800">
     <div class="flex">
       <span class="bg-custom-green rounded-full p-2 w-9 h-9 md:w-11 md:h-11 lg:w-14 lg:h-14">
@@ -45,15 +52,15 @@
         </li>
       </ul>
       <div class=" lg:w-auto  w-3/4 flex flex-col lg:flex-row  justify-center gap-4      self-center  text-1xl  ">
-        <a href="./sign_in.php"
+        <a href="./<?=$username_link?>"
           class="text-custom-green  text-center border-solid border-2 border-custom-green rounded-md  px-3">
           <span>
-            Log in
+           <?=$name_user?>
           </span>
         </a>
-        <a href="./sign_in.php" class="bg-custom-green rounded-md px-3 text-center text-white font-semibold">
+        <a href="./<?=$status_link?>" class="bg-custom-green rounded-md px-3 text-center text-white font-semibold">
           <span>
-            Register
+           <?=$status?>
           </span>
         </a>
       </div>

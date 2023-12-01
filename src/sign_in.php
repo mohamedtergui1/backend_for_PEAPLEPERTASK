@@ -5,6 +5,32 @@ $region_res=mysqli_query($cnx,$qeury_region);
 
 $qeury_city ="SELECT id, nom FROM city";
 $city_res=mysqli_query($cnx,$qeury_city);
+
+   session_start();
+   require("./dashboard/cnx.php");
+   if(isset($_SESSION['role'])&&isset($_SESSION['id_user'])){
+        $id = $_SESSION['id_user'];
+       
+        $qeury="SELECT * FROM users WHERE  id = $id";
+        $res=mysqli_query($cnx,$qeury);
+        $row=mysqli_fetch_array($res);
+       
+        $username=$row['username'];
+        $image=$row['image'];
+        $name_user=$username;
+        $status="log-out";
+        $username_link="#";
+        $status_link="dashboard/script/script.php";
+   }
+   else {
+    $name_user="sign up";
+    $status="Sign In";
+    $username_link="sign_in.php";
+    $status_link= "sign_in.php";
+   }
+  
+
+
 ?>
 <!doctype html>
 <html>
@@ -41,9 +67,10 @@ $city_res=mysqli_query($cnx,$qeury_city);
             <h1 class="text-center text-gray-400 font-light mb-10 text-2xl font-sans">
                 Sign Up for Free</h1>
                 <div id="error" class="alert alert-danger " role="alert">
- <!-- action="./script_users/script.php" -->
+ 
 </div>
-            <form  method="post" enctype="multipart/form-data">
+<!-- action="./script_users/script.php" method="post" enctype="multipart/form-data" -->
+            <div >
                 <div class=" flex top-row relative">
                     <div class=" relative mb-10 w-1/2 mr-4">
                         <label class="block">
@@ -83,7 +110,7 @@ $city_res=mysqli_query($cnx,$qeury_city);
                 </div>
                 <div class="flex flex-row justify-around mb-3">
           <select class="border-2 shadow h-10 w-40" name="region" id="region" required >
-          <option selected disabled>region</option>
+          <option selected  value="">region</option>
          
             <?php
             while($res_fetch=mysqli_fetch_assoc($region_res)):
@@ -96,7 +123,7 @@ $city_res=mysqli_query($cnx,$qeury_city);
           </select>
 
           <select class="border-2 shadow h-10 w-40" name="city" id="city" required >
-          <option selected disabled >city</option>
+          <option selected  value="" >city</option>
          
             <?php
             while($res_fetch=mysqli_fetch_assoc($city_res)):
@@ -108,13 +135,15 @@ $city_res=mysqli_query($cnx,$qeury_city);
           
           </select>
           </div>
-              <input type="file" name="image"  class="my-4" enctype="multipart/form-data" >
+              <!-- <input type="file" name="image" id="image"  class="my-4" enctype="multipart/form-data" > -->
                 <button type="submit" name="regester" id="signup_btn"
                     class="w-full bg-teal-500 hover:bg-custom-green text-white border-0 rounded-none focus:outline-none uppercase tracking-wide font-semibold py-4 px-0 text-base transition-all duration-500 ease-in-out">
-                    Get Started
+                    <div id="spn" class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div> <p id="text_btn">Get Started</p>
                 </button>
 
-            </form>
+            </div>
 
         </div>
 
@@ -170,7 +199,7 @@ $city_res=mysqli_query($cnx,$qeury_city);
     $(document).ready(function () {
         
         $("#error").hide();
-      
+       $('#spn').hide();
         $("#signup_btn").click(function () {
             let email = $("#email").val().trim();
             let fname= $("#fname").val().trim();
@@ -178,11 +207,12 @@ $city_res=mysqli_query($cnx,$qeury_city);
             let password= $("#password").val().trim();
             let region= $("#region").val();
             let city= $("#city").val();
-            alert(city + "/" + region)
-           
-            if (email !== "" &&  password !== "" && lname !== "" &&  fname !== "" &&  region.val() !== "" &&  city.val() !== "" ) {
+            let image =$("#image").val();
+            $('#text_btn').hide();
+            $('#spn').show();
+            if (email !== "" &&  password !== "" && lname !== "" &&  fname !== ""  ) {
 // && password !== "" && lname !== "" && region.val() !== "" && city.val() !== ""
-           
+          
             $.ajax({
                 url: "../ajax/ajax_sign_up.php",
                 type: "POST",
@@ -196,9 +226,9 @@ $city_res=mysqli_query($cnx,$qeury_city);
                     if(response==1){
                         $("#error").removeClass("alert-danger");
                         $("#error").addClass("alert-success");
-                        $("#error").show().text("your information is valide you are ready to regestre");
-                        // setTimeout(function(){
-                        //     $("body").load("index.php").hide().fadeIn(1000);},3000)
+                        $("#error").show().text("your acccount create succesfuly enjoy don't forget your password");
+                        setTimeout(function(){
+                            $("body").load("index.php").hide().fadeIn(1000);},1000)
                     }
                 }
                 // ,
@@ -208,10 +238,13 @@ $city_res=mysqli_query($cnx,$qeury_city);
                 //     console.log(error);
                 // }
             });
+         
         }else {
             $("#error").show().text("please enter all your information to connnect");
         }
-            return false;
+        $('#text_btn').show(500);
+            $('#spn').hide(1000);
+           
         
         });
     });

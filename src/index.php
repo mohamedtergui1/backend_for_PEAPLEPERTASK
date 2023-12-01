@@ -1,3 +1,31 @@
+<?php 
+   session_start();
+   require("./dashboard/cnx.php");
+   if(isset($_SESSION['role'])&&isset($_SESSION['id_user'])){
+        $id = $_SESSION['id_user'];
+       
+        $qeury="SELECT * FROM users WHERE  id = $id";
+        $res=mysqli_query($cnx,$qeury);
+        $row=mysqli_fetch_array($res);
+       
+        $username=$row['username'];
+        $image=$row['image'];
+        $name_user=$username;
+        $status="log-out";
+        $username_link="#";
+        $status_link="dashboard/script/script.php";
+   }
+   else {
+    $name_user="sign up";
+    $status="Sign In";
+    $username_link="sign_in.php";
+    $status_link= "sign_in.php";
+   }
+  
+?>
+
+
+
 <!doctype html>
 <html lang="en" class="scroll-smooth">
 
