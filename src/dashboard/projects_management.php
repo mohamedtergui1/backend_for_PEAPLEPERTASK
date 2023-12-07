@@ -132,15 +132,15 @@ $result_sub_category = mysqli_query($cnx, $qeury_subcategory);
 
 
                                                     <td class="username py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white username">
-                                                        <?=$username?>
+                                                    <?=$categoryNAME ?> 
                                                     </td>
                                                     <td class="categoryNAME py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white password">
-                                                        <?=$categoryNAME ?>
+                                                        <?= $souscategoriesNAME?>
                                                     </td>
 
 
                                                     <td class="souscategoriesNAME py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white password">
-                                                        <?= $souscategoriesNAME?>
+                                                        <?=$username?>
                                                     </td>
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
 

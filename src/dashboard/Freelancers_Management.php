@@ -15,44 +15,14 @@ $qeury = "SELECT id, username , image from users where id = $id_session";
    $row=mysqli_fetch_assoc($resi);
   $image=$row['image'];
   $username=$row['username'];
-$qeury = "SELECT id, freelandersNAME, freelanderCompetences FROM freelances";
+$qeury = "SELECT id, username FROM users";
 $res=mysqli_query($cnx,$qeury);
-$query_users="SELECT users.id AS id, username FROM users LEFT JOIN freelances ON users.id = freelances.usersID WHERE freelances.usersID IS NULL 
-UNION 
-SELECT freelances.usersID AS id, NULL AS username FROM freelances LEFT JOIN users ON freelances.usersID = users.id WHERE users.id IS NULL;";
+$query_users="SELECT id , username FROM users  WHERE role <> 'freelancer';";
 
 $result=mysqli_query($cnx,$query_users);
 
 
-if(isset($_GET['id_delete_freelanxer'])){
-    $id=$_GET['id_delete_freelanxer'];
-    $qeury="DELETE FROM freelances WHERE id = $id";
-    $runQeury=mysqli_query($cnx,$qeury);
-    header("Location:Freelancers_Management.php");
-}
-else if(isset($_GET['name'])&&isset($_GET['competence'])&&isset($_GET['user'])){
-    $id_user=$_GET['user'];
-    $name=$_GET['name'];
-    $competence=$_GET['competence'];
-    $qeury_add="INSERT INTO freelances( freelandersNAME, freelanderCompetences, usersID) VALUES ('$name','$competence', $id_user)";
-    $Resultat=mysqli_query($cnx,$qeury_add);
-    header("Location:Freelancers_Management.php");
-}
-else if(isset($_GET['new_competence'])&&isset($_GET['new_name'])&&isset($_GET['id_edit_freelancer'])){
-    $id_user=$_GET['id_edit_freelancer'];
-    $name=$_GET['new_name'];
-    $competence=$_GET['new_competence'];
-    $query_edit="UPDATE freelances SET freelandersNAME='$name',freelanderCompetences='$competence' WHERE id = $id_user ";
-    $run_edit_qeury=mysqli_query($cnx,$query_edit);
-    header("Location:Freelancers_Management.php");
-}
-else if (isset($_GET['delete_all'])){
-    if($_GET['delete_all']='true'){
-    $delete_qeury="DELETE FROM freelances ";
-    $run_qeury=mysqli_query($cnx,$delete_qeury);
-    header("Location:Freelancers_Management.php");
-    }
-}
+
 
 
 mysqli_close($cnx);
@@ -133,15 +103,15 @@ mysqli_close($cnx);
                                             <?php
                                             while ($row = mysqli_fetch_assoc($res)):
                                                 $id = $row['id'];
-                                                $freelandersNAME = $row['freelandersNAME'];
-                                                $freelanderCompetences = $row['freelanderCompetences'];
+                                                $username = $row['username'];
+                                                $id = $row['id'];
                                                
                                                 ?>
                                                 <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                                     <td
-                                                        class="freelandersNAME py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white username"><?=$freelandersNAME?></td>
+                                                        class="freelandersNAME py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white username"><?=$username?></td>
                                                     <td
-                                                        class="freelanderCompetences py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white password"><?=$freelanderCompetences?></td>
+                                                        class="freelanderCompetences py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white password"><?=$id?></td>
                                                            
                                                     
                                                     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">

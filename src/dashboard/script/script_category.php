@@ -14,6 +14,7 @@ if (isset($_POST['nom_cetegoty_add']) && isset($_FILES['image'])) {
     print_r($_FILES['image']);
    
     $input_add_cate_value = $_POST['nom_cetegoty_add'];
+    $input_add_cate_value= htmlspecialchars($input_add_cate_value);
     $image = $_FILES['image']['name'];
     $image_tmp = $_FILES['image']['tmp_name'];
 
@@ -63,6 +64,7 @@ else if (isset($_GET['categorie_select'])&& $_GET['nom_cetegoty_']){
     
     $category_select_id_category = $_GET['categorie_select'];
     $sub_cate_name = $_GET['nom_cetegoty_'];
+    $sub_cate_name= htmlspecialchars($sub_cate_name);
     echo $category_select_id_category . $sub_cate_name;
     
     $query = "INSERT INTO souscategories (souscategoriesNAME, categoriesID) VALUES (?, ?)";
@@ -82,6 +84,7 @@ else if (isset($_GET['categorie_select'])&& $_GET['nom_cetegoty_']){
 else if ( isset($_GET['edit_category_new_name']) && isset($_GET['edit_category_new_id'])){
           $id_category_want_edit =$_GET['edit_category_new_id'];
           $new_name_category= $_GET['edit_category_new_name'];
+          $new_name_category= htmlspecialchars($new_name_category);
           $qeury_update="UPDATE categories  SET name='$new_name_category' WHERE id=$id_category_want_edit";
           $run_qeury_update=mysqli_query($cnx,$qeury_update);
           header('Location:../CategoryManagement.php');
@@ -89,6 +92,7 @@ else if ( isset($_GET['edit_category_new_name']) && isset($_GET['edit_category_n
 else if (isset($_GET['edit_sub_category_new_name'])&& isset($_GET['edit_sub_category_new_id'])){
     $id_sub_cetegory = $_GET['edit_sub_category_new_id'] ;
     $new_name_sub_category =$_GET['edit_sub_category_new_name'];
+    $new_name_sub_category= htmlspecialchars($new_name_sub_category);
     $qeury_update = ("UPDATE souscategories  SET souscategoriesNAME='$new_name_sub_category' WHERE id=$id_sub_cetegory");
     $run_qeuryUpdate = mysqli_query($cnx,$qeury_update);
     header('Location:../CategoryManagement.php');

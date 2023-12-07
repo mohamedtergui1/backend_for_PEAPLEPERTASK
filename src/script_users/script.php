@@ -6,6 +6,7 @@ require("../dashboard/cnx.php");
 if (isset($_POST['regester'])) {
     regestre();
 } else if (isset($_POST['login'])) {
+    
     login();
 }
 
@@ -41,25 +42,29 @@ function login()
 
                 if ($row) {
                     $password_after_fetch = $row["password"];
-
+                   
                     if (password_verify($password, $password_after_fetch)) {
-                        $role = $row["role"];
+                      
+                      $role = $row["role"];
                         $id = $row["id"];
+                    
+                        
 
-                        if ($role == "user") {
-                            $_SESSION['role'] = 'user';
-                            $_SESSION['id_user'] = $id;
+                        if ($role == "user" || $role=='freelancer') {
+                            $_SESSION['role'] = $role;
+                            $_SESSION['id_user'] = $id; 
                             header("Location:../index.php");
-                        } else if ($role == "admin") {
+                        }
+                        else if ($role == "admin") {
                             $_SESSION['role'] = 'admin';
                             $_SESSION['id_admin'] = $id;
                             header("Location:../dashboard/dashboard.php");
                         } else {
                             echo "something is whrong";
-                        }
+                        } 
                     }
 
-                } else {
+                } else { 
                     echo "Password is incorrect. Please try again";
                 }
             } else {
@@ -110,7 +115,7 @@ function regestre()
 
         if ($run_add_query) {
 
-            $bool = move_uploaded_file($image_tmp, $destination_path);
+            $bool = move_uploaded_file($image, $destination_path);
             if ($bool) {
                 header('Location:../sign_in.php');
                 exit();

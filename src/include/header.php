@@ -4,7 +4,8 @@
   $status;
   $status_link;
   $username_link;
-
+  $image_user;
+  $status_image;
 ?>
 <header class="flex bg-gray-50 justify-between p-2 md:py-3 md:px-8 lg:px-10 dark:bg-slate-800">
     <div class="flex">
@@ -52,11 +53,13 @@
         </li>
       </ul>
       <div class=" lg:w-auto  w-3/4 flex flex-col lg:flex-row  justify-center gap-4      self-center  text-1xl  ">
+      <img class="h-10 rounded-full w-10 <?=$status_image?>" src="../images/users/<?= $image_user?>" alt="profile">
         <a href="./<?=$username_link?>"
           class="text-custom-green  text-center border-solid border-2 border-custom-green rounded-md  px-3">
           <span>
            <?=$name_user?>
           </span>
+         
         </a>
         <a href="./<?=$status_link?>" class="bg-custom-green rounded-md px-3 text-center text-white font-semibold">
           <span>

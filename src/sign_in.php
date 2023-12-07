@@ -8,26 +8,14 @@ $city_res=mysqli_query($cnx,$qeury_city);
 
    session_start();
    require("./dashboard/cnx.php");
-   if(isset($_SESSION['role'])&&isset($_SESSION['id_user'])){
-        $id = $_SESSION['id_user'];
-       
-        $qeury="SELECT * FROM users WHERE  id = $id";
-        $res=mysqli_query($cnx,$qeury);
-        $row=mysqli_fetch_array($res);
-       
-        $username=$row['username'];
-        $image=$row['image'];
-        $name_user=$username;
-        $status="log-out";
-        $username_link="#";
-        $status_link="dashboard/script/script.php";
-   }
-   else {
+
     $name_user="sign up";
     $status="Sign In";
     $username_link="sign_in.php";
     $status_link= "sign_in.php";
-   }
+    $image_user="";
+        $status_image="hidden";
+
   
 
 
@@ -134,10 +122,26 @@ $city_res=mysqli_query($cnx,$qeury_city);
              <?php endwhile; ?>
           
           </select>
+         
           </div>
+          <div class=" items-start w-1/2 flex flex-col">
+             <input class="m-2" type="file" id="image" placeholder="upload your photo">
+             
+        </div>
+        <div class=" m-2 items-start w-1/2 flex flex-col">
+             <select name="" id="role">
+                <option value="freelancer">
+                freelancer
+                </option>
+                <option value="user">
+                cliente
+                </option>
+             </select>
+             
+        </div>
               <!-- <input type="file" name="image" id="image"  class="my-4" enctype="multipart/form-data" > -->
                 <button type="submit" name="regester" id="signup_btn"
-                    class="w-full bg-teal-500 hover:bg-custom-green text-white border-0 rounded-none focus:outline-none uppercase tracking-wide font-semibold py-4 px-0 text-base transition-all duration-500 ease-in-out">
+                    class="mt-2 w-full bg-teal-500 hover:bg-custom-green text-white border-0 rounded-none focus:outline-none uppercase tracking-wide font-semibold py-4 px-0 text-base transition-all duration-500 ease-in-out">
                     <div id="spn" class="spinner-border text-primary" role="status">
   <span class="visually-hidden">Loading...</span>
 </div> <p id="text_btn">Get Started</p>
@@ -146,7 +150,7 @@ $city_res=mysqli_query($cnx,$qeury_city);
             </div>
 
         </div>
-
+    
         <div  id="login">
             <h1 class="text-center text-gray-400 font-light mb-10 text-2xl font-sans">
                 Welcome Back!</h1>
@@ -171,7 +175,7 @@ $city_res=mysqli_query($cnx,$qeury_city);
                         class="text-black block w-full h-fit py-1 px-2 border border-gray-300 rounded-none transition duration-250 bg-white"
                         type="password" required autocomplete="off" />
                 </div>
-                <button type="submit" name="login"
+                <button type="submit" name="login" id="login"
                     class="w-full bg-teal-500 text-white border-0 rounded-none hover:bg-custom-green focus:outline-none uppercase tracking-wide font-semibold py-4 px-0 text-base transition-all duration-500 ease-in-out">
                     Get Started
                 </button>
@@ -194,60 +198,111 @@ $city_res=mysqli_query($cnx,$qeury_city);
      <script src="../javascript/form.js"></script>
      <script src="../javascript/jquery.js"></script>
   <script src="../javascript/script.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <script>
-    $(document).ready(function () {
-        
-        $("#error").hide();
-       $('#spn').hide();
-        $("#signup_btn").click(function () {
-            let email = $("#email").val().trim();
-            let fname= $("#fname").val().trim();
-            let lname= $("#lname").val().trim();
-            let password= $("#password").val().trim();
-            let region= $("#region").val();
-            let city= $("#city").val();
-            let image =$("#image").val();
-            $('#text_btn').hide();
-            $('#spn').show();
-            if (email !== "" &&  password !== "" && lname !== "" &&  fname !== ""  ) {
-// && password !== "" && lname !== "" && region.val() !== "" && city.val() !== ""
-          
+
+$(document).ready(function () {
+    $("#error").hide();
+    $('#spn').hide();
+
+    $("#signup_btn").click(function () {
+        let email = $("#email").val().trim();
+        let fname = $("#fname").val().trim();
+        let lname = $("#lname").val().trim();
+        let password = $("#password").val().trim();
+        let role = $("#role").val();
+        let region = $("#region").val();
+        let city = $("#city").val();
+        let image = $("#image").prop('files')[0]; 
+
+        var form_data = new FormData();
+        form_data.append("image", image);
+        form_data.append("email", email);
+        form_data.append("fname", fname);
+        form_data.append("lname", lname);
+        form_data.append("password", password); 
+        form_data.append("region", region);
+        form_data.append("city", city);
+        form_data.append("role", role);
+        $('#text_btn').hide();
+        $('#spn').show();
+
+        if (email !== "" && password !== "" && lname !== "" && fname !== "") {
             $.ajax({
                 url: "../ajax/ajax_sign_up.php",
                 type: "POST",
-                // , fname: fname, lname: lname, password: password, region: region, city: city 
-                data: { email: email, password: password, fname: fname, lname: lname, region: region, city: city},
+                dataType: 'script',
+                data: form_data,
                 cache: false,
+                contentType: false, 
+                processData: false,
+                beforeSend:function(){
+                    $('#text_btn').hide();
+                    $('#spn').show();
+                    $("#signup_btn").prop("disabled", true);
+                },
                 success: function (response) {
                     $("#error").addClass("alert-danger");
-                        $("#error").removeClass("alert-success");
+                    $("#error").removeClass("alert-success");
                     $("#error").show().html(response);
-                    if(response==1){
+                    
+                    if (response == 1) {
                         $("#error").removeClass("alert-danger");
                         $("#error").addClass("alert-success");
-                        $("#error").show().text("your acccount create succesfuly enjoy don't forget your password");
-                        setTimeout(function(){
-                            $("body").load("index.php").hide().fadeIn(1000);},1000)
-                    }
-                }
-                // ,
-                // error: function (error) {
-                    
+                        $("#error").show().text("Your account created successfully. Enjoy and don't forget your password");
+                        setTimeout(function () {
+                           
+                           window.location.href="./index.php"
 
-                //     console.log(error);
-                // }
+                        }, 1000)
+                    }
+                },error:function(error){
+                    $("#error").show().text("somethingwrong"+error);
+                },
+                complete:function(){
+                    $('#text_btn').show();
+                     $('#spn').hide();
+                     $("#signup_btn").prop("disabled", false);
+                }
+                
             });
-         
-        }else {
-            $("#error").show().text("please enter all your information to connnect");
+        } else {
+            $("#error").show().text("Please enter all your information to connect");
         }
-        $('#text_btn').show(500);
-            $('#spn').hide(1000);
-           
+        setTimeout(function(){
+            $('#text_btn').show();
+                     $('#spn').hide();
+                     $("#signup_btn").prop("disabled", false);
+        },300);
         
-        });
     });
+
+//     var status = new XMLHttpRequest();
+
+// status.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+//         console.log(this.response);
+//         var resultat=JSON.parse(this.response);
+//         console.log(resultat);
+//         resultat.forEach(res => {
+//             console.log(res.id + "\n" + res.username + "\n");
+//         });
+       
+//     }
+// };
+// $('#text_btn').hover(function(){
+     
+//     status.open('GET', 'test.php', true);
+//     status.send();
+
+// })
+
+
+
+
+    });
+
+   
 </script>
 
 </body>

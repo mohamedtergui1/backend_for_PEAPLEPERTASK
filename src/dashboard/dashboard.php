@@ -23,7 +23,7 @@ if(isset($_SESSION['id_admin'])){
 $qeury = "SELECT COUNT(id) as n_users FROM users";
 $number_of_users = mysqli_query($cnx, $qeury);
 $number_of_users = mysqli_fetch_assoc($number_of_users)["n_users"];
-$qeury = "SELECT COUNT(id) as n_freelancers from freelances";
+$qeury = "SELECT COUNT(id) as n_freelancers from users WHERE role = 'freelancer'";
 $number_of_freelancer = mysqli_query($cnx, $qeury);
 $number_of_freelancer = mysqli_fetch_assoc($number_of_freelancer)["n_freelancers"];
 $qeury = "SELECT COUNT(id) as n_projects FROM projects ";
@@ -39,11 +39,11 @@ $statstique_project_by_city = mysqli_query($cnx, $qeury);
 $qeury = "SELECT city.nom as city , COUNT(users.id) as number_users FROM users INNER JOIN city ON  users.city_id = city.id
     GROUP BY city.id";
 $statstique_users_by_city = mysqli_query($cnx, $qeury);
-$qeury = "SELECT city.nom AS city , COUNT(users.id) as number_of_freelnacer FROM freelances INNER JOIN city INNER JOIN users
-ON   users.city_id = city.id and users.id=freelances.usersID
+$qeury = "SELECT city.nom AS city , COUNT(users.id) as number_of_freelnacer FROM  city INNER JOIN users
+ON   users.city_id = city.id WHERE role = 'freelancer'
 GROUP BY city.id ";
 $statstique_freelancer_by_city = mysqli_query($cnx, $qeury);
-$qeury="SELECT (COUNT(freelances.id)/(SELECT COUNT(id)  from users)) as pourcentage from freelances";
+$qeury="SELECT (COUNT(users.id)/(SELECT COUNT(id)  from users WHERE role = 'user')) as pourcentage from users WHERE role = 'freelancer'";
 $pourcentage =mysqli_fetch_assoc(mysqli_query($cnx,$qeury))["pourcentage"];
 
 ?>

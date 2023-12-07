@@ -12,7 +12,7 @@ if(isset($_SESSION['id_admin'])){
   require("cnx.php");
   $qeury = "SELECT id, username , image from users where id = $id_session";
   $resi=mysqli_query($cnx,$qeury);
-   $row=mysqli_fetch_assoc($resi);
+  $row=mysqli_fetch_assoc($resi);
   $image=$row['image'];
   $username=$row['username'];
  
@@ -31,8 +31,8 @@ ORDER BY souscategories.id desc
 $categories = mysqli_query($cnx, $qeury);
 $categoriesA = mysqli_query($cnx, $qeury);
 $Subcategories = mysqli_query($cnx, $qeury_CATEGORY);
-$image='';
-$username='mohamed tergui';
+
+
 
 mysqli_close($cnx);
 ?>
@@ -50,6 +50,9 @@ mysqli_close($cnx);
 <body class="overflow-x-hidden dark:bg-gray-900 ">
 
     <body class="overflow-x-hidden dark:bg-gray-900 ">
+    <div class="fixed w-full bg-slate-500 z-50"  style="height:80vh; width:40vh; top: 25%; left:2%; z-indzx:100" id="search" >
+           
+        </div>
         <!-- header -->
         <?php
         include("header_dashbord.php");
@@ -221,12 +224,55 @@ mysqli_close($cnx);
                 </div>
             </div>
         </dialog>
+
+        
         <!-- en modal sub category -->
         <script src="../../javascript/jquery.js"></script>
         <script src="../../javascript/dashboard.js"></script>
         <script src="../../javascript/dashCategories.js"></script>
        
+   <script>
+    $(document).ready(function () {
+    $("#search").hide();
+    $("#input_search").keyup(function(){
+      let search =  $("#input_search").val().trim();
+       
+           status.open('GET', `test.php?search=${search}`, true);
+        //    status.setRequestHeader()
+              status.send();
+       
+    })
 
+
+      var status = new XMLHttpRequest();
+
+        status.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        // console.log(this.response);
+        var resultat=JSON.parse(this.response);
+        $("#search").html("");
+        // console.log(resultat); 
+        $("#search").show();
+        console.log()
+        if(resultat.length>0){
+        resultat.forEach(res => { 
+            $("#search").append( 
+           ` <h1><a  href="www.google?city=${res}" > ${res}</a></h1>` 
+        ); 
+        })} else $("#search").html("<h1> N o result found </h1>");
+       
+    }
+};
+// $('#text_btn').hover(function(){
+     
+//     status.open('GET', 'test.php', true);
+//     status.send();
+
+// })
+
+
+})
+   </script>
 
     </body>
 

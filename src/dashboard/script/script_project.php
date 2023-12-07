@@ -20,8 +20,11 @@ if(isset($_SESSION['id_admin'])){
     isset($_FILES['image'])
 ) {
     $name_project = $_POST['name_project'];
+    $name_project= htmlspecialchars($name_project);
     $description = $_POST['description'];
+    $description= htmlspecialchars($description);
     $user = $_POST['user'];
+    $user= htmlspecialchars($user);
     $category = $_POST['category'];
     $sub_category = $_POST['sub_category'];
     $image = $_FILES['image']['name'];
@@ -47,8 +50,11 @@ if(isset($_SESSION['id_admin'])){
     
     else if (isset($_POST['user']) && $_POST['category'] && $_POST['sub_category'] && $_POST['description'] && $_POST['name'] && $_POST['id']){
         $name_project = $_POST['name'];
+        $name_project= htmlspecialchars($name_project);
         $description = $_POST['description'];
+        $description= htmlspecialchars($description);
         $user = $_POST['user'];
+        $user= htmlspecialchars($user);
         $category = $_POST['category'];
         $sub_category = $_POST['sub_category'];
           $id_edit=$_POST['id'];
