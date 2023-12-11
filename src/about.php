@@ -1,4 +1,39 @@
-
+<?php  
+  session_start();
+  require("./dashboard/cnx.php");
+      if(isset($_SESSION['role']) && isset($_SESSION['id_user'])) {
+        $id = $_SESSION['id_user'];
+      
+        $qeury = "SELECT * FROM users WHERE  id = $id";
+        $res = mysqli_query($cnx, $qeury);
+        $row = mysqli_fetch_array($res);
+      
+        $username = $row['username'];
+        $image = $row['image'];
+        $name_user = $username;
+        $status = "log-out";
+        $username_link = "#";
+        $status_link = "dashboard/script/script.php";
+        $image_user = $row["image"];
+        $qeury_category = "SELECT id,name FROM categories";
+        $result_category = mysqli_query($cnx, $qeury_category);
+        $qeury_subcategory = "SELECT id,souscategoriesNAME FROM souscategories";
+        $result_sub_category = mysqli_query($cnx, $qeury_subcategory);
+        if(empty($image_user)) {
+          $image_user = "no_photo.png";
+        }
+        $status_image = "block";
+      
+        // $status_image="block";
+      } else {
+        $name_user = "sign up";
+        $status = "Sign In";
+        $username_link = "sign_in.php";
+        $status_link = "sign_in.php";
+        $image_user = "";
+        $status_image = "hidden";
+      }
+  ?>
 <!DOCTYPE html>
 <html>
   <head>

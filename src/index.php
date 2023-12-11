@@ -32,13 +32,15 @@
    $qeury="SELECT * FROM categories LIMIT 12";
    $categories =mysqli_query($cnx,$qeury);
    $qeury="SELECT users.id as id, users.username as name, image , regions.nom as region , city.nom AS city 
-   FROM users INNER JOIN city INNER JOIN regions WHERE role ='freelancer' LIMIT 16";
+   FROM users INNER JOIN city INNER JOIN regions ON city.id = users.city_id and regions.id=city.region_id WHERE role ='freelancer' LIMIT 12";
    $freelancers=mysqli_query($cnx,$qeury);
    $qeury="SELECT projects.id as id, users.image as user_image, projectNAME, projrctDescription, users.username as user,name as categoryNAME,souscategoriesNAME , projects.image as image FROM projects INNER JOIN categories INNER JOIN souscategories INNER JOIN users ON  projects.categoriesID=categories.id and projects.souscategoriesID=souscategories.id and projects.usersID=users.id LIMIT 16";
    $projects=mysqli_query($cnx,$qeury);
    
+   $testomonials=mysqli_query($cnx,"SELECT users.username as name , users.image as image , temoignages.TemoignagesComment as comment FROM `temoignages` INNER JOIN  
+   users ON users.id = temoignages.usersID")
 
-  
+    
 ?>
 
 
@@ -575,7 +577,6 @@
            $freelancer_id=$freelancer['id'];
           $city_freela =$freelancer['city'];
           $region_freela=$freelancer['region'];
-          
       ?>
    <li
             class="freelancer-card h-full mr-2 border-2 dark:border-slate-700 drop-shadow-md mb-1 cursor-pointer w-3/4 md:w-2/5 lg:w-1/5 shrink-0 rounded-xl overflow-hidden ">
@@ -610,17 +611,17 @@
                 <!--  -->
                 <?php 
 
-$qeury="SELECT skill , skills.id as id    FROM skills INNER JOIN pivot_skills INNER JOIN users ON users.id=pivot_skills.id_user AND	
-skills.id=pivot_skills.id_skill WHERE users.id = $freelancer_id limit 2";
-$skills=mysqli_query($cnx,$qeury);
-if(mysqli_num_rows($skills)> 0){ 
-while($skill=mysqli_fetch_assoc($skills)){
-$skill_name=$skill["skill"];
-?>
-<p class="px-3 py-1 m-0.5 text-sm bg-gray-50 rounded-md border">
-<?=$skill_name?>
-</p>
-<?php } } ?>
+                          $qeury="SELECT skill , skills.id as id    FROM skills INNER JOIN pivot_skills INNER JOIN users ON users.id=pivot_skills.id_user AND	
+                          skills.id=pivot_skills.id_skill WHERE users.id = $freelancer_id LIMIT 1";
+                          $skills=mysqli_query($cnx,$qeury);
+                          if(mysqli_num_rows($skills)> 0){ 
+                          while($skill=mysqli_fetch_assoc($skills)){
+                          $skill_name=$skill["skill"];
+                          ?>
+                          <a class="px-3 py-1 m-0.5 text-sm bg-gray-50 rounded-md border">
+                          <?=$skill_name?>
+                          </a>
+                          <?php } } ?>
 
                     <!--  -->
                 <a href="#" class="px-3 py-1 m-0.5 text-sm bg-gray-50 rounded-md border">
@@ -710,10 +711,10 @@ $skill_name=$skill["skill"];
            $project_sub_cete=$project['souscategoriesNAME'];
            $user_image= $project['user_image'];
       ?>
-
+<a href="./projects_details.php?id=<?=$project_id?>">
 <li
             class="offer-card h-full mr-4 drop-shadow-md cursor-pointer w-4/5 md:w-2/5 lg:w-1/5 shrink-0 rounded-xl overflow-hidden hover:drop-shadow-lg hover:border-b-2 p-2">
-            <div class="photo bg-cover bg-no-repeat bg-center bg-green-50 h-48"><img class="w-full h-full" src="../images/offers/<?=$project_image?>" alt=""></div>
+            <div class="photo bg-cover bg-no-repeat bg-center bg-green-50 h-48"><img class="w-full h-full" src="../images/projects/<?=$project_image?>" alt=""></div>
 
             <div class="bg-gray-50 dark:bg-zinc-700 w-full min-h-56 flex flex-col justify-between p-2 rounded-md">
               <div class="flex flex-row p-3 items-center gap-0.5">
@@ -728,6 +729,23 @@ $skill_name=$skill["skill"];
                     <?=$project_sub_cete?>
                   </a>
                   <a href="#" class="px-3 py-1 m-0.5 text-sm bg-gray-50 rounded-md border">
+                    ...
+                  </a>
+                </div>
+                <div class="specialities flex flex-row flex-wrap my-1 text-gray-600 dark:text-gray-200 px-3">
+                <?php 
+                  $tags_project=mysqli_query($cnx,"SELECT tags.id, tag FROM tags INNER JOIN pivot_tags 
+                  INNER JOIN projects on projects.id = pivot_tags.id_project 
+                  and pivot_tags.id_tag=tags.id WHERE projects.id = $project_id LIMIT 2");
+                  if(mysqli_num_rows($tags_project)> 0){ 
+                    while($tag_=mysqli_fetch_assoc($tags_project)){
+                ?>
+                   <a href="#" class="px-3 py-1 m-0.5 text-sm bg-gray-50 rounded-md border">
+                    <?=$tag_['tag']?>
+                  </a>
+                 
+                  <?php }} ?>
+                   <a href="#" class="px-3 py-1 m-0.5 text-sm bg-gray-50 rounded-md border">
                     ...
                   </a>
                 </div>
@@ -760,17 +778,15 @@ $skill_name=$skill["skill"];
                 <?php
                 if(isset($_SESSION['role'])):
                     if($_SESSION['role']=='freelancer'){
-               
-                
                 ?>
-            <button type="button" class="bg-blue-500 py-2 px-3 rounded-md ">Aplly offer</button>
+            <button type="button" class="bg-blue-500 py-2 px-3 rounded-md btn_offers" value="<?=$project_id?>" >Aplly offer</button>
            <?php }endif; ?>
             </div>
             </div>
            
           </li>
 
-
+          </a>
 <?php endwhile; endif; ?>
          
         </ul>
@@ -921,7 +937,17 @@ $skill_name=$skill["skill"];
   <!-- Testimonials section -->
   <section id="testimonials" class="testimonials-section w-full p-4 md:py-6 md:px-8 lg:px-10">
     <div class="swiper mySwiper w-full md:w-3/4 overflow-hidden m-auto">
-      <div class="swiper-wrapper flex flex-row items-center w-full py-5">
+ <div class="swiper-wrapper flex flex-row items-center w-full py-5">
+    <?php 
+
+         if(mysqli_num_rows($testomonials)> 0):  
+               
+             while($testo=mysqli_fetch_assoc($testomonials)):
+             $comment=$testo['comment'];
+             $image=$testo['image'];
+             $name=$testo['name'];
+         ?>
+     
         <div class="swiper-slide dark:text-slate-300 min-w-full p-2">
           <div
             class="w-full dark:bg-zinc-700 flex flex-col justify-center items-center gap-y-5 rounded-xl bg-white p-5 drop-shadow-xl ">
@@ -933,23 +959,23 @@ $skill_name=$skill["skill"];
               </svg>
             </div>
             <div class="text-center">
-              <p class="text-xl">The ease of communication and security provided make the process of outsourcing
-                effortless. and it is an amazing experience to get out tasks done with PeolpePerTask.
+              <p class="text-xl"><?=$comment?>
               </p>
             </div>
             <div class="flex flex-row gap-x-2 items-center">
-              <img class="w-12 h-12 rounded-full" src="../images/sliders/slide4/cardAbdelghani.jpg"
+              <img class="w-12 h-12 rounded-full" src="../images/users/<?=$image?>"
                 alt="Testimonial photo">
               <div class="flex flex-col">
-                <h3 class="text-lg">Abdelghani A.</h3>
+                <h3 class="text-lg"><?=$name?></h3>
                 <p class="-mt-1.5 text-sm text-gray-600 dark:text-slate-400">web developer</p>
               </div>
             </div>
           </div>
-        </div>
-
-       
-      </div>
+        </div>  
+      
+     <?php   endwhile; endif;  ?>
+       </div>
+    
     </div>
   </section>
   <!-- end Testimonials section -->
@@ -960,9 +986,77 @@ $skill_name=$skill["skill"];
     ?>
   <!-- end Footer -->
 
+    <dialog id="modal_offer" class="bg-slate-500 p-2">
+    <div class="flex justify-end">
+<svg id="close_btn" class="w-6 h-6 text-gray-800 m-2 dark:text-white" aria-hidden="true"
+  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+    d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+</svg>
+</div>
+      <div  class="w-full h-full flex flex-col justify-center p-10" style="width:80vw; height:80vh;" >
+      <div  style="width:60%; height:60%;" class="flex flex-col gap-5 " >
+      <input type="text" value="" id="price" placeholder="price">
+      <input type="date" value="" id="date">
+      <input type="hidden" value="" id="id_project">
+      <input class="p-2 bg-blue-500" type="submit" name="" id="offer_">
+    </div>
+    </div>
+    </dialog>
+   <script src="../javascript/jquery.js"></script>
+  <script>
+     $("document").ready(function () {
+         var modal=document.getElementById("modal_offer");
+         $(".btn_offers").each(function(){
+            $(this).click(function () { 
+              modal.showModal();
+             var id_project =$(this).val()
+           
+             $("#id_project").val(id_project);
+            });
+         })
+         $("#close_btn").click(function(){
+          modal.close();
+         })
+         $("#offer_").click(function(){
+          var form = new FormData();
+
+
+              form.append("price", $("#price").val().trim());
+              form.append("date", $("#date").val());
+              form.append("id", $("#id_project").val());
+              let price=$("#price").val().trim()
+              let date=$("#date").val()
+              let id=$("#id_project").val()
+
+  console.log(form)
+
+                  $.ajax({
+                    url:"../ajax/send_offre.php",
+                    type:"POST",
+                    data:{
+                      price:price,id:id,date:date
+                    },
+                    success:function(response){
+                      if(response=='1'){
+                        alert("the offer send with success");
+                      }else if(response=='1'){
+                        alert("faild send offer");
+                      }
+                    },
+                    error:function(){
+                      alert("its not work");
+                    }
+                  
+                  })
+            
+        
+         })
+    });
+  </script>
   
   <script src="../javascript/swiper-bundle.min.js"></script>
-  <script src="../javascript/jquery.js"></script>
+
   <script src="../javascript/script.js"></script>
 !  <script src="../javascript/homeScript.js"></script>
 </body>

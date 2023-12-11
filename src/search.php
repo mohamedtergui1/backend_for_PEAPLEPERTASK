@@ -1,6 +1,7 @@
 <?php
 session_start();
 require("./dashboard/cnx.php");
+$tags=mysqli_query($cnx,"SELECT tag,id FROM tags");
 
 
 if (isset($_SESSION['role']) && isset($_SESSION['id_user'])) {
@@ -118,15 +119,17 @@ $projects = mysqli_query($cnx, $qeury);
     </form>
     <form class="flex  md:justify-start justify-center items-end">
       <div class="relative w-1/2  m-auto md:w-full lg:w-full  ">
-        <select type="text" id="hero-field"
+        <select type="text" id="tags"
           class="h-14 w-full m-auto drop-shadow-md bg-white rounded-md border bg-opacity-50 border-gray-300 focus:ring-1 focus:ring-custom-green focus:bg-transparent focus:border-custom-green text-base outline-none text-gray-500 py-2 px-6 leading-8 transition-colors duration-200 ease-in-out">
-          <option value="#" selected disabled>all categories</option>
-          <option value="option1">option1</option>
-          <option value="option1">option2</option>
-          <option value="option1">option3</option>
-          <option value="option1">option4</option>
-          <option value="option1">option5</option>
-          <option value="option1">option6</option>
+          <option value="" selected disabled>filter by tag</option>
+          <?php 
+                if(mysqli_num_rows($tags) > 0) :
+                  while($row_tag = mysqli_fetch_assoc($tags)) :
+                   $id= $row_tag['id'];
+                   $tag = $row_tag['tag'];
+          ?>
+          <option value="<?=$id?>" ><?=$tag?></option>
+          <?php endwhile; endif;  ?>
         </select>
       </div>
     </form>
@@ -148,7 +151,7 @@ $projects = mysqli_query($cnx, $qeury);
         <li
           class="offer-card h-full mr-4 drop-shadow-md cursor-pointer w-4/5 md:w-2/5 lg:w-1/5 shrink-0 rounded-xl overflow-hidden hover:drop-shadow-lg hover:border-b-2 p-2">
           <div class="photo bg-cover bg-no-repeat bg-center bg-green-50 h-48"><img class="w-full h-full"
-              src="../images/offers/<?= $project_image ?>" alt=""></div>
+              src="../images/projects/<?= $project_image ?>" alt=""></div>
 
           <div class="bg-gray-50 dark:bg-zinc-700 w-full min-h-56 flex flex-col justify-between p-2 rounded-md">
             <div class="flex flex-row p-3 items-center gap-0.5">
@@ -295,11 +298,11 @@ $projects = mysqli_query($cnx, $qeury);
 $(document).ready(function () {
   $("#search").on('input', function () {
     let search = $(this).val().trim();
-
+    let tag = $("#tags").val();
     $.ajax({
       url: "../ajax/ajax.search.php",
       method: "POST",
-      data: { search: search },
+      data: { search: search , tag:tag},
       dataType: "json",
       success: function (resultat) {
         $("#parent").html("");
@@ -307,7 +310,7 @@ $(document).ready(function () {
           $("#parent").append(`
               <li
             class="offer-card h-full mr-4 drop-shadow-md cursor-pointer w-4/5 md:w-2/5 lg:w-1/5 shrink-0 rounded-xl overflow-hidden hover:drop-shadow-lg hover:border-b-2 p-2">
-            <div class="photo bg-cover bg-no-repeat bg-center bg-green-50 h-48"><img class="w-full h-full" src="../images/offers/${res.image}" alt=""></div>
+            <div class="photo bg-cover bg-no-repeat bg-center bg-green-50 h-48"><img class="w-full h-full" src="../images/projects/${res.image}" alt=""></div>
 
             <div class="bg-gray-50 dark:bg-zinc-700 w-full min-h-56 flex flex-col justify-between p-2 rounded-md">
               <div class="flex flex-row p-3 items-center gap-0.5">
@@ -358,7 +361,7 @@ $(document).ready(function () {
                
                 
                 ?>
-            <button type="button" class="bg-blue-500 py-2 px-3 rounded-md ">Aplly offer</button>
+            <button type="button" class="bg-blue-500 py-2 px-3 rounded-md " value="${res.id}"  >Aplly offer</button>
            <?php }endif; ?>
             </div>
                   </div>
